@@ -12,6 +12,12 @@ import xyz.staffjoy.common.config.StaffjoyRestConfig;
 
 import java.util.concurrent.Executor;
 
+/**
+ * 异步调用处理
+ * @author yuanhuaxin
+ * @date 2020-09-22 20:07
+ *
+ **/
 @Configuration
 @EnableAsync
 @Import(value = {StaffjoyRestConfig.class})
