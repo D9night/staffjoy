@@ -6,6 +6,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 // environment related configuration
+
+/**
+ * 环境配置
+ */
 @Data
 @Builder
 public class EnvConfig {
