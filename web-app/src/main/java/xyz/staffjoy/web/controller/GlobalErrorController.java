@@ -19,6 +19,9 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import java.util.UUID;
 
+/**
+ * 全局错误页面
+ */
 @Controller
 @SuppressWarnings(value = "Duplicates")
 public class GlobalErrorController implements ErrorController {
@@ -42,11 +45,11 @@ public class GlobalErrorController implements ErrorController {
     @RequestMapping("/error")
     public String handleError(HttpServletRequest request, Model model) {
 
-        Object statusCode = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
-        Object exception = request.getAttribute(RequestDispatcher.ERROR_EXCEPTION);
+        Object statusCode = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);//javax.servlet.error.status_code
+        Object exception = request.getAttribute(RequestDispatcher.ERROR_EXCEPTION);//javax.servlet.error.exception
 
         ErrorPage errorPage = null;
-        if (statusCode != null && (Integer)statusCode == HttpStatus.NOT_FOUND.value()) {
+        if (statusCode != null && (Integer)statusCode == HttpStatus.NOT_FOUND.value()) {//404
             errorPage = errorPageFactory.buildNotFoundPage();
         } else {
             errorPage = errorPageFactory.buildInternalServerErrorPage();

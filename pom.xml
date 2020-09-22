@@ -48,6 +48,7 @@
                 <scope>import</scope>
             </dependency>
             <!-- Spring Cloud -->
+            <!-- 使用到springcloud中的Feign-->
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>

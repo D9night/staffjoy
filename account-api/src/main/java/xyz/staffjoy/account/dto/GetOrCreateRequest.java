@@ -10,6 +10,9 @@ import xyz.staffjoy.common.validation.PhoneNumber;
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.Email;
 
+/**
+ *
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

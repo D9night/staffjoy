@@ -5,7 +5,8 @@ import xyz.staffjoy.common.api.ResultCode;
 
 /**
  * Business Service Exception
- *
+ * 业务异常
+ * 服务层的异常统一包装成ServiceException
  * @author william
  */
 public class ServiceException extends RuntimeException {

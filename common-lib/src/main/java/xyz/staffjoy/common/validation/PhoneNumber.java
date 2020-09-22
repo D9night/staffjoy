@@ -3,6 +3,9 @@ package xyz.staffjoy.common.validation;
 import javax.validation.Constraint;
 import java.lang.annotation.*;
 
+/**
+ * 手机号码
+ */
 @Documented
 @Constraint(validatedBy = PhoneNumberValidator.class)
 @Target({ElementType.FIELD, ElementType.PARAMETER})

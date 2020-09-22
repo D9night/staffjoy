@@ -1,5 +1,8 @@
 package xyz.staffjoy.account;
 
+/**
+ *
+ */
 public class AccountConstant {
     public static final String SERVICE_NAME = "account-service";
 

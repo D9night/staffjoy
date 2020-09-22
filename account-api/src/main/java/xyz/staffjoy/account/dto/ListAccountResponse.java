@@ -3,6 +3,9 @@ package xyz.staffjoy.account.dto;
 import lombok.*;
 import xyz.staffjoy.common.api.BaseResponse;
 
+/**
+ *
+ */
 @Getter
 @Setter
 @NoArgsConstructor

@@ -3,6 +3,9 @@ package xyz.staffjoy.common.validation;
 import javax.validation.Constraint;
 import java.lang.annotation.*;
 
+/**
+ * 时区
+ */
 @Documented
 @Constraint(validatedBy = TimezoneValidator.class)
 @Target({ElementType.FIELD})

@@ -22,6 +22,10 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import java.util.Set;
 
+/**
+ * 统一的异常处理
+ * 统一的异常捕获
+ */
 @RestControllerAdvice
 public class GlobalExceptionTranslator {
 
@@ -128,7 +132,7 @@ public class GlobalExceptionTranslator {
                 .build();
     }
 
-    @ExceptionHandler(ServiceException.class)
+    @ExceptionHandler(ServiceException.class)//该项目中定义的异常
     public BaseResponse handleError(ServiceException e) {
         logger.error("Service Exception", e);
         return BaseResponse

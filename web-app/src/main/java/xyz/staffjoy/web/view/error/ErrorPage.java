@@ -4,6 +4,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * 错误页面
+ */
 @Getter
 @Setter
 @Builder

@@ -22,6 +22,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 
+
 @RestController
 @RequestMapping("/v1/account")
 @Validated
@@ -34,6 +35,7 @@ public class AccountController {
 
     @Autowired
     private EnvConfig envConfig;
+
 
     // GetOrCreate is for internal use by other APIs to match a user based on their phonenumber or email.
     @PostMapping(path = "/get_or_create")

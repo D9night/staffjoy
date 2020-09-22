@@ -437,10 +437,12 @@ public class AccountService {
         serviceHelper.syncUserAsync(userId);
     }
 
+    //DTM转化到DTO
     private AccountDto convertToDto(Account account) {
         return modelMapper.map(account, AccountDto.class);
     }
 
+    //DTO转化到DMO
     private Account convertToModel(AccountDto accountDto) {
         return modelMapper.map(accountDto, Account.class);
     }

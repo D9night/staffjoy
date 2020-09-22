@@ -3,6 +3,9 @@ package xyz.staffjoy.common.validation;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+/**
+ * 手机号码验证
+ */
 public class PhoneNumberValidator implements ConstraintValidator<PhoneNumber, String> {
 
     @Override

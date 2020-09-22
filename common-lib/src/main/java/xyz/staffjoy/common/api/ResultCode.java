@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * Result Code Enum
- *
+ * 响应码
  * @author william
  */
 @Getter
