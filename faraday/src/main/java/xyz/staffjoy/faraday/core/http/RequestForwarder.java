@@ -25,6 +25,11 @@ import static java.time.Duration.ofNanos;
 import static org.springframework.http.HttpHeaders.*;
 import static org.springframework.http.ResponseEntity.status;
 
+/**
+ * 请求转发器
+ * 内部需要查询httpclient映射表
+ * 需要使用loadbalance负载均衡器
+ */
 public class RequestForwarder {
 
     private static final ILogger log = SLoggerFactory.getLogger(RequestForwarder.class);
@@ -36,6 +41,7 @@ public class RequestForwarder {
     protected final LoadBalancer loadBalancer;
     protected final Optional<MeterRegistry> meterRegistry;
     protected final ProxyingTraceInterceptor traceInterceptor;
+    //响应截获器
     protected final PostForwardResponseInterceptor postForwardResponseInterceptor;
 
     public RequestForwarder(
@@ -58,18 +64,31 @@ public class RequestForwarder {
         this.postForwardResponseInterceptor = postForwardResponseInterceptor;
     }
 
+    /**
+     * 进行实际的转发请求，并构造响应数据
+     * @param data
+     * @param traceId
+     * @param mapping
+     * @return
+     */
     public ResponseEntity<byte[]> forwardHttpRequest(RequestData data, String traceId, MappingProperties mapping) {
+        //解析转发目的地
         ForwardDestination destination = resolveForwardDestination(data.getUri(), mapping);
+        //从client的request中移除协议层的头数据 这些数据我们不需要发送到远端服务器
         prepareForwardedRequestHeaders(data, destination);
+        //转发开始时进行追踪拦截
         traceInterceptor.onForwardStart(traceId, destination.getMappingName(),
                 data.getMethod(), data.getHost(), destination.getUri().toString(),
                 data.getBody(), data.getHeaders());
+        //构造spring的request 数据
         RequestEntity<byte[]> request = new RequestEntity<>(data.getBody(), data.getHeaders(), data.getMethod(), destination.getUri());
+        //发送请求
         ResponseData response = sendRequest(traceId, request, mapping, destination.getMappingMetricsName(), data);
 
         log.debug(String.format("Forwarded: %s %s %s -> %s %d", data.getMethod(), data.getHost(), data.getUri(), destination.getUri(), response.getStatus().value()));
 
         traceInterceptor.onForwardComplete(traceId, response.getStatus(), response.getBody(), response.getHeaders());
+        //响应截获器
         postForwardResponseInterceptor.intercept(response, mapping);
         prepareForwardedResponseHeaders(response);
 
@@ -97,7 +116,8 @@ public class RequestForwarder {
     /**
      * Remove any protocol-level headers from the clients request that
      * do not apply to the new request we are sending to the remote server.
-     *
+     * 从client的request中移除协议层的头数据
+     * 这些数据我们不需要发送到远端服务器
      * @param request
      * @param destination
      */
@@ -107,6 +127,12 @@ public class RequestForwarder {
         headers.remove(TE);
     }
 
+    /**
+     * 解析转发目的地
+     * @param originUri
+     * @param mapping
+     * @return
+     */
     protected ForwardDestination resolveForwardDestination(String originUri, MappingProperties mapping) {
         return new ForwardDestination(createDestinationUrl(originUri, mapping), mapping.getName(), resolveMetricsName(mapping));
     }
@@ -120,11 +146,23 @@ public class RequestForwarder {
         }
     }
 
+    /**
+     * 发送需要转发的请求
+     * @param traceId
+     * @param request
+     * @param mapping
+     * @param mappingMetricsName
+     * @param requestData
+     * @return
+     */
     protected ResponseData sendRequest(String traceId, RequestEntity<byte[]> request, MappingProperties mapping, String mappingMetricsName, RequestData requestData ) {
+       //spring的响应数据
         ResponseEntity<byte[]> response;
         long startingTime = nanoTime();
         try {
+            //获得httpclient，即相关的resttemplate,再通过resttemplate发送请求
             response = httpClientProvider.getHttpClient(mapping.getName()).exchange(request, byte[].class);
+            //
             recordLatency(mappingMetricsName, startingTime);
         } catch (HttpStatusCodeException e) {
             recordLatency(mappingMetricsName, startingTime);
@@ -137,9 +175,15 @@ public class RequestForwarder {
             throw e;
         }
         UnmodifiableRequestData data = new UnmodifiableRequestData(requestData);
+        //构造新的响应数据，并返回
         return new ResponseData(response.getStatusCode(), response.getHeaders(), response.getBody(), data);
     }
 
+    /**
+     *
+     * @param metricName
+     * @param startingTime
+     */
     protected void recordLatency(String metricName, long startingTime) {
         meterRegistry.ifPresent(meterRegistry -> meterRegistry.timer(metricName).record(ofNanos(nanoTime() - startingTime)));
     }

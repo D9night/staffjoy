@@ -9,6 +9,9 @@ import java.util.Map;
 
 import static org.apache.commons.lang3.builder.ToStringStyle.NO_CLASS_NAME_STYLE;
 
+/**
+ * 路由映射的相关信息
+ */
 public class MappingProperties {
     /**
      * Name of the mapping
@@ -16,10 +19,12 @@ public class MappingProperties {
     private String name;
     /**
      * Path for mapping incoming HTTP requests URIs.
+     * 主机头
      */
     private String host = "";
     /**
      * List of destination hosts where HTTP requests will be forwarded.
+     * 目标服务的地址
      */
     private List<String> destinations = new ArrayList<>();
     /**

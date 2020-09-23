@@ -13,7 +13,13 @@ import java.util.Map;
 import static java.util.stream.Collectors.toMap;
 import static org.apache.http.impl.client.HttpClientBuilder.create;
 
+/**
+ * httpClient提供者
+ * 产生httpClient
+ * 实现httpclient映射表(Service-HttpClient)
+ */
 public class HttpClientProvider {
+    //最终是使用spring提供的RestTemplate访问目标服务
     protected Map<String, RestTemplate> httpClients = new HashMap<>();
 
     public void updateHttpClients(List<MappingProperties> mappings) {
@@ -24,6 +30,11 @@ public class HttpClientProvider {
         return httpClients.get(mappingName);
     }
 
+    /**
+     * 构建RestTemplate
+     * @param mapping
+     * @return
+     */
     protected RestTemplate createRestTemplate(MappingProperties mapping) {
         CloseableHttpClient client = createHttpClient(mapping).build();
         HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory(client);

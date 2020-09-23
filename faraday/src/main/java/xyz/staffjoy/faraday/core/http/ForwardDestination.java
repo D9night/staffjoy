@@ -2,6 +2,9 @@ package xyz.staffjoy.faraday.core.http;
 
 import java.net.URI;
 
+/**
+ * 转发目的地
+ */
 public class ForwardDestination {
 
     protected final URI uri;

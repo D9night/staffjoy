@@ -14,6 +14,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 基于编程的方式构建路由映射表
+ */
 public class ProgrammaticMappingsProvider extends MappingsProvider {
     protected final EnvConfig envConfig;
 
@@ -28,6 +31,7 @@ public class ProgrammaticMappingsProvider extends MappingsProvider {
         this.envConfig = envConfig;
     }
 
+    //不需要动态路由映射表
     @Override
     protected boolean shouldUpdateMappings(HttpServletRequest request) {
         return false;
@@ -36,6 +40,7 @@ public class ProgrammaticMappingsProvider extends MappingsProvider {
     @Override
     protected List<MappingProperties> retrieveMappings() {
         List<MappingProperties> mappings = new ArrayList<>();
+        //迭代服务的相关信息
         Map<String, Service> serviceMap = ServiceDirectory.getMapping();
         for(String key : serviceMap.keySet()) {
             String subDomain = key.toLowerCase();

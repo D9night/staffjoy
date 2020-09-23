@@ -12,6 +12,7 @@ import java.util.TreeMap;
  * e.g. "login" service on prod is "login" + "staffjoy.xyz"
  *
  * KEEP THIS LIST IN ALPHABETICAL ORDER PLEASE
+ * 服务目录信息
  */
 public class ServiceDirectory {
 

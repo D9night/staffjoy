@@ -1,11 +1,12 @@
 server:
   port: 80
 
-
+#静态配置路由信息
 faraday:
   enable_programmatic_mapping: false
   tracing:
     enabled: false
+  #路由表,基于域名的路由方式
   mappings:
     -
       name: faraday_route

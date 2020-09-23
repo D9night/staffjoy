@@ -10,25 +10,30 @@ import static org.springframework.core.Ordered.HIGHEST_PRECEDENCE;
 
 /**
  * Faraday configuration properties
+ * 配置属性
  */
 @ConfigurationProperties("faraday")
 public class FaradayProperties {
     /**
      * Faraday servlet filter order.
+     * highest_precedence
      */
     private int filterOrder = HIGHEST_PRECEDENCE + 100;
     /**
      * Enable programmatic mapping or not,
      * false only in dev environment, in dev we use mapping via configuration file
+     * 动态配置 开发环境通过配置文件
      */
     private boolean enableProgrammaticMapping = true;
     /**
      * Properties responsible for collecting metrics during HTTP requests forwarding.
+     * 收集http请求调用链
      */
     @NestedConfigurationProperty
     private MetricsProperties metrics = new MetricsProperties();
     /**
      * Properties responsible for tracing HTTP requests proxying processes.
+     * 追踪http请求代理过程
      */
     @NestedConfigurationProperty
     private TracingProperties tracing = new TracingProperties();

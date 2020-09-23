@@ -6,6 +6,9 @@ import org.springframework.http.HttpStatus;
 import static xyz.staffjoy.faraday.core.utils.BodyConverter.convertBodyToString;
 import static xyz.staffjoy.faraday.core.utils.BodyConverter.convertStringToBody;
 
+/**
+ * 新的响应数据
+ */
 public class ResponseData {
     protected HttpStatus status;
     protected HttpHeaders headers;

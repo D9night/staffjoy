@@ -9,6 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * 基于静态配置的路由映射
+ */
 public class ConfigurationMappingsProvider extends MappingsProvider {
 
     public ConfigurationMappingsProvider(
@@ -22,6 +25,7 @@ public class ConfigurationMappingsProvider extends MappingsProvider {
     }
 
 
+    //不用动态更新路由映射表
     @Override
     protected boolean shouldUpdateMappings(HttpServletRequest request) {
         return false;
@@ -29,6 +33,7 @@ public class ConfigurationMappingsProvider extends MappingsProvider {
 
     @Override
     protected List<MappingProperties> retrieveMappings() {
+        //从spring的配置文件中获取路由映射表 如application-dev.yml
         return faradayProperties.getMappings().stream()
                 .map(MappingProperties::copy)
                 .collect(Collectors.toList());

@@ -30,6 +30,12 @@ import xyz.staffjoy.faraday.view.AssetLoader;
 
 import java.util.*;
 
+/**
+ * 网关配置
+ * ReverseProxyFilter通过FilterRegistrationBean注册到Spring容器环境中，
+ * Spring会自动将这个Filter注册到Web容器中。
+ * 参考faraday项目源码中的config/FaradayConfiguration这个Bean配置文件。
+ */
 @Configuration
 @EnableConfigurationProperties({FaradayProperties.class, StaffjoyPropreties.class})
 @Import(value = StaffjoyWebConfig.class)
@@ -50,9 +56,15 @@ public class FaradayConfiguration {
         this.assetLoader = assetLoader;
     }
 
+    /**
+     * 注册ReverseProxyFilter
+     * @param proxyFilter
+     * @return
+     */
     @Bean
     public FilterRegistrationBean<ReverseProxyFilter> faradayReverseProxyFilterRegistrationBean(
             ReverseProxyFilter proxyFilter) {
+        //FilterRegistrationBean为springboot中的
         FilterRegistrationBean<ReverseProxyFilter> registrationBean = new FilterRegistrationBean<>(proxyFilter);
         registrationBean.setOrder(faradayProperties.getFilterOrder()); // by default to Ordered.HIGHEST_PRECEDENCE + 100
         return registrationBean;
@@ -90,6 +102,15 @@ public class FaradayConfiguration {
         return registrationBean;
     }
 
+    /**
+     * 当没有ReverseProxyFilter的实例bean时，自动生成一个
+     * @param extractor
+     * @param mappingsProvider
+     * @param requestForwarder
+     * @param traceInterceptor
+     * @param requestInterceptor
+     * @return
+     */
     @Bean
     @ConditionalOnMissingBean
     public ReverseProxyFilter faradayReverseProxyFilter(
@@ -103,18 +124,21 @@ public class FaradayConfiguration {
                 requestForwarder, traceInterceptor, requestInterceptor);
     }
 
+    //实例化HttpClientProvider的Bean
     @Bean
     @ConditionalOnMissingBean
     public HttpClientProvider faradayHttpClientProvider() {
         return new HttpClientProvider();
     }
 
+    //实例化RequestDataExtractor的Bean
     @Bean
     @ConditionalOnMissingBean
     public RequestDataExtractor faradayRequestDataExtractor() {
         return new RequestDataExtractor();
     }
 
+    //实例化MappingsProvider的Bean
     @Bean
     @ConditionalOnMissingBean
     public MappingsProvider faradayConfigurationMappingsProvider(EnvConfig envConfig,
@@ -133,18 +157,21 @@ public class FaradayConfiguration {
         }
     }
 
+    //实例化RandomLoadBalancer的Bean
     @Bean
     @ConditionalOnMissingBean
     public LoadBalancer faradayLoadBalancer() {
         return new RandomLoadBalancer();
     }
 
+    //实例化MappingsValidator的Bean
     @Bean
     @ConditionalOnMissingBean
     public MappingsValidator faradayMappingsValidator() {
         return new MappingsValidator();
     }
 
+    //实例化RequestForwarder的Bean
     @Bean
     @ConditionalOnMissingBean
     public RequestForwarder faradayRequestForwarder(

@@ -14,6 +14,9 @@ import java.util.stream.Collectors;
 
 import static org.springframework.util.CollectionUtils.isEmpty;
 
+/**
+ * 路由映射表(Host-Service)实现超类
+ */
 public abstract class MappingsProvider {
 
     private static final ILogger log = SLoggerFactory.getLogger(MappingsProvider.class);
@@ -36,6 +39,12 @@ public abstract class MappingsProvider {
         this.httpClientProvider = httpClientProvider;
     }
 
+    /**
+     * 路由映射表
+     * @param originHost 原始主机头
+     * @param request
+     * @return
+     */
     public MappingProperties resolveMapping(String originHost, HttpServletRequest request) {
         if (shouldUpdateMappings(request)) {
             updateMappings();
@@ -49,16 +58,22 @@ public abstract class MappingsProvider {
         return resolvedMappings.get(0);
     }
 
+    /**
+     * 路由表如果有更新，则该方法会被调用
+     */
     @PostConstruct
     protected synchronized void updateMappings() {
         List<MappingProperties> newMappings = retrieveMappings();
         mappingsValidator.validate(newMappings);
         mappings = newMappings;
+        //生成httpclient映射表
         httpClientProvider.updateHttpClients(mappings);
         log.info("Destination mappings updated", mappings);
     }
 
+    //是否需要更新路由映射表
     protected abstract boolean shouldUpdateMappings(HttpServletRequest request);
 
+    //获取路由映射表
     protected abstract List<MappingProperties> retrieveMappings();
 }

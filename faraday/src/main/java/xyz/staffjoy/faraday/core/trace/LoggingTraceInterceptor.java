@@ -5,9 +5,13 @@ import com.github.structlog4j.SLoggerFactory;
 
 import static org.apache.commons.lang3.StringUtils.trimToEmpty;
 
+/**
+ * 日志追踪
+ */
 public class LoggingTraceInterceptor implements TraceInterceptor {
     private static final ILogger log = SLoggerFactory.getLogger(LoggingTraceInterceptor.class);
 
+    //一接收请求即调用
     @Override
     public void onRequestReceived(String traceId, IncomingRequest request) {
         log.info("Incoming HTTP request received:", "traceId", traceId,
@@ -15,6 +19,7 @@ public class LoggingTraceInterceptor implements TraceInterceptor {
                 "uri", request.getUri(), "headers", request.getHeaders());
     }
 
+    //没有匹配到相关请求
     @Override
     public void onNoMappingFound(String traceId, IncomingRequest request) {
         log.info("No mapping found for incoming HTTP request: ", "traceId", traceId,

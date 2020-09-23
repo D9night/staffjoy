@@ -42,8 +42,20 @@ public class ProxyingTraceInterceptor {
         });
     }
 
+    /**
+     * 转发开始时，代理追踪拦截器进行追踪
+     * @param traceId
+     * @param mappingName
+     * @param method
+     * @param host
+     * @param uri
+     * @param body
+     * @param headers
+     */
     public void onForwardStart(String traceId, String mappingName, HttpMethod method, String host, String uri, byte[] body, HttpHeaders headers) {
+        //追踪开启时则运行
         runIfTracingIsEnabled(() -> {
+            //请求转发request
             ForwardRequest request = new ForwardRequest();
             request.setMappingName(mappingName);
             request.setMethod(method);
@@ -69,6 +81,10 @@ public class ProxyingTraceInterceptor {
         });
     }
 
+    /**
+     * 追踪开启时运行
+     * @param operation
+     */
     protected void runIfTracingIsEnabled(Runnable operation) {
         if (faradayProperties.getTracing().isEnabled()) {
             operation.run();

@@ -2,6 +2,9 @@ package xyz.staffjoy.faraday.core.trace;
 
 import org.springframework.http.HttpMethod;
 
+/**
+ * 进入的请求
+ */
 public class IncomingRequest extends HttpEntity {
 
     protected HttpMethod method;

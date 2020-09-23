@@ -2,6 +2,9 @@ package xyz.staffjoy.faraday.core.trace;
 
 import static xyz.staffjoy.faraday.core.utils.BodyConverter.convertBodyToString;
 
+/**
+ * 请求转发request
+ */
 public class ForwardRequest extends IncomingRequest {
 
     protected String mappingName;

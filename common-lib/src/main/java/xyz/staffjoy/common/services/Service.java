@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * Service is an app on Staffjoy that runs on a subdomain
+ * 具体的服务信息
  */
 @Data
 @NoArgsConstructor
