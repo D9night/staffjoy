@@ -44,7 +44,7 @@ public class ServiceHelperTest {
     private EnvConfig envConfig;
 
     @InjectMocks
-    @Spy
+    @Spy//涉及到第三方，使用spy，部分mock技术
     private ServiceHelper serviceHelper;
 
     @Test

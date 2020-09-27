@@ -47,10 +47,10 @@ public class AccountControllerTest {
     @Autowired
     EnvConfig envConfig;
 
-    @MockBean
+    @MockBean//测试中不依赖mail,mock掉
     MailClient mailClient;
 
-    @MockBean
+    @MockBean//测试中不依赖bot,mock掉
     BotClient botClient;
 
     @Autowired
@@ -662,22 +662,22 @@ public class AccountControllerTest {
         assertThat(genericAccountResponse.getCode()).isEqualTo(ResultCode.PARAM_VALID_ERROR);
 
         // invalid phone number
-       /* createAccountRequest = CreateAccountRequest.builder()
+        createAccountRequest = CreateAccountRequest.builder()
                 .phoneNumber("invalid_phonenumber")
                 .build();
         genericAccountResponse = accountClient.createAccount(AuthConstant.AUTHORIZATION_WWW_SERVICE, createAccountRequest);
         log.info(genericAccountResponse.toString());
         assertThat(genericAccountResponse.isSuccess()).isFalse();
-        assertThat(genericAccountResponse.getCode()).isEqualTo(ResultCode.PARAM_VALID_ERROR);*/
+        assertThat(genericAccountResponse.getCode()).isEqualTo(ResultCode.PARAM_VALID_ERROR);
 
         // invalid auth
-        /*createAccountRequest = CreateAccountRequest.builder()
+        createAccountRequest = CreateAccountRequest.builder()
                 .phoneNumber(phoneNumber)
                 .build();
         genericAccountResponse = accountClient.createAccount(AuthConstant.AUTHORIZATION_ANONYMOUS_WEB, createAccountRequest);
         log.info(genericAccountResponse.toString());
         assertThat(genericAccountResponse.isSuccess()).isFalse();
-        assertThat(genericAccountResponse.getCode()).isEqualTo(ResultCode.UN_AUTHORIZED);*/
+        assertThat(genericAccountResponse.getCode()).isEqualTo(ResultCode.UN_AUTHORIZED);
     }
 
     @Test

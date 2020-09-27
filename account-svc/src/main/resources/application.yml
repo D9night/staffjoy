@@ -18,9 +18,11 @@ spring:
 
 staffjoy:
   common:
+    #集中异常日志云服务
     sentry-dsn: ${SENTRY_DSN}
     deploy-env: ${DEPLOY:V2}
   signing-secret: ${SIGNING_SECRET}
+  #下面通过环境变量传进来，后面是默认值
   email-service-endpoint: ${EMAIL_SERVICE_ENDPOINT:http://email-service:8080}
   company-service-endpoint: ${COMPANY_SERVICE_ENDPOINT:http://company-service:8080}
   bot-service-endpoint: ${BOT_SERVICE_ENDPOINT:http://bot-service:8080}

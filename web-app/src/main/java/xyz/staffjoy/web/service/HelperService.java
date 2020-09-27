@@ -99,10 +99,23 @@ public class HelperService {
         }
     }
 
+    /**
+     * 构建请求url
+     * @param scheme
+     * @param host
+     * @return
+     */
     public static String buildUrl(String scheme, String host) {
         return buildUrl(scheme, host, null);
     }
 
+    /**
+     * 构建url
+     * @param scheme
+     * @param host
+     * @param path
+     * @return
+     */
     public static String buildUrl(String scheme, String host, String path) {
         try {
             URI uri = new URI(scheme, host, path, null);

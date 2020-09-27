@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 /**
  *
  * A context holder class for holding the current userId and authz info
+ * 认证上线文助手类
+ * 在本项目中主要是用来向后传递userid
  *
  * @author bobo
  */
@@ -26,11 +28,11 @@ public class AuthContext {
     }
 
     public static String getUserId() {
-        return getRequetHeader(AuthConstant.CURRENT_USER_HEADER);
+        return getRequetHeader(AuthConstant.CURRENT_USER_HEADER);//faraday-current-user-id
     }
 
     public static String getAuthz() {
-        return getRequetHeader(AuthConstant.AUTHORIZATION_HEADER);
+        return getRequetHeader(AuthConstant.AUTHORIZATION_HEADER);//Authorization
     }
 
 }

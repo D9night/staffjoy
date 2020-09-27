@@ -1,5 +1,8 @@
 package xyz.staffjoy.common.auth;
 
+/**
+ * 授权header定义
+ */
 public class AuthConstant {
 
     public static final String COOKIE_NAME = "staffjoy-faraday";

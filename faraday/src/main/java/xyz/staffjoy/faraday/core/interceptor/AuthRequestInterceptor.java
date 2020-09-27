@@ -57,30 +57,42 @@ public class AuthRequestInterceptor implements PreForwardRequestInterceptor {
         // TODO - filter restricted headers
     }
 
+    /**
+     * 网关传递认证授权信息
+     * @param data
+     * @param mapping
+     * @return
+     */
     private String setAuthHeader(RequestData data, MappingProperties mapping) {
-        // default to anonymous web when prove otherwise
-        String authorization = AuthConstant.AUTHORIZATION_ANONYMOUS_WEB;
+        // default to anonymous(匿名的) web when prove otherwise
+        String authorization = AuthConstant.AUTHORIZATION_ANONYMOUS_WEB;//faraday-anonymous
         HttpHeaders headers = data.getHeaders();
+        //获取用户会话信息
         Session session = this.getSession(data.getOriginRequest());
         if (session != null) {
             if (session.isSupport()) {
-                authorization = AuthConstant.AUTHORIZATION_SUPPORT_USER;
+                authorization = AuthConstant.AUTHORIZATION_SUPPORT_USER;//faraday-support
             } else {
-                authorization = AuthConstant.AUTHORIZATION_AUTHENTICATED_USER;
+                authorization = AuthConstant.AUTHORIZATION_AUTHENTICATED_USER;//faraday-authenticated
             }
 
+            //校验黑名单userid
             this.checkBannedUsers(session.getUserId());
 
-            headers.set(AuthConstant.CURRENT_USER_HEADER, session.getUserId());
+            headers.set(AuthConstant.CURRENT_USER_HEADER, session.getUserId());//faraday-current-user-id
         } else {
             // prevent hacking
             headers.remove(AuthConstant.CURRENT_USER_HEADER);
         }
-        headers.set(AuthConstant.AUTHORIZATION_HEADER, authorization);
+        headers.set(AuthConstant.AUTHORIZATION_HEADER, authorization);//Authorization
 
         return authorization;
     }
 
+    /**
+     * 校验黑名单userid
+     * @param userId
+     */
     private void checkBannedUsers(String userId) {
         if (bannedUsers.containsKey(userId)) {
             log.warn(String.format("Banned user accessing service - user %s", userId));
@@ -140,13 +152,20 @@ public class AuthRequestInterceptor implements PreForwardRequestInterceptor {
         }
     }
 
+    /**
+     * JWT校验和取出用户会话数据
+     * @param request
+     * @return
+     */
     private Session getSession(HttpServletRequest request) {
         String token = Sessions.getToken(request);
         if (token == null) return null;
         try {
+            //jwt校验
             DecodedJWT decodedJWT = Sign.verifySessionToken(token, signingSecret);
-            String userId = decodedJWT.getClaim(Sign.CLAIM_USER_ID).asString();
-            boolean support = decodedJWT.getClaim(Sign.CLAIM_SUPPORT).asBoolean();
+            String userId = decodedJWT.getClaim(Sign.CLAIM_USER_ID).asString();//userId
+            boolean support = decodedJWT.getClaim(Sign.CLAIM_SUPPORT).asBoolean();//support
+            //构造用户会话
             Session session = Session.builder().userId(userId).support(support).build();
             return session;
         } catch (Exception e) {

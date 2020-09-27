@@ -40,10 +40,10 @@ public class AccountController {
     // GetOrCreate is for internal use by other APIs to match a user based on their phonenumber or email.
     @PostMapping(path = "/get_or_create")
     @Authorize(value = {
-            AuthConstant.AUTHORIZATION_SUPPORT_USER,
-            AuthConstant.AUTHORIZATION_WWW_SERVICE,
+            AuthConstant.AUTHORIZATION_SUPPORT_USER,//支持的用户
+            AuthConstant.AUTHORIZATION_WWW_SERVICE,//支持www服务调用该服务
             AuthConstant.AUTHORIZATION_COMPANY_SERVICE
-    })
+    })//控制器调用授权
     public GenericAccountResponse getOrCreate(@RequestBody @Valid GetOrCreateRequest request) {
         AccountDto accountDto = accountService.getOrCreate(request.getName(), request.getEmail(), request.getPhoneNumber());
         GenericAccountResponse genericAccountResponse = new GenericAccountResponse(accountDto);
@@ -91,7 +91,7 @@ public class AccountController {
             AuthConstant.AUTHORIZATION_COMPANY_SERVICE,
             AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
             AuthConstant.AUTHORIZATION_BOT_SERVICE,
-            AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
+            AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,//结果faraday认证过的用户
             AuthConstant.AUTHORIZATION_SUPPORT_USER,
             AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
     })
@@ -220,8 +220,12 @@ public class AccountController {
         return baseResponse;
     }
 
+    /**
+     * 用户角色鉴权
+     * @param userId
+     */
     private void validateAuthenticatedUser(String userId) {
-        if (AuthConstant.AUTHORIZATION_AUTHENTICATED_USER.equals(AuthContext.getAuthz())) {
+        if (AuthConstant.AUTHORIZATION_AUTHENTICATED_USER.equals(AuthContext.getAuthz())) {//faraday-authenticated
             String currentUserId = AuthContext.getUserId();
             if (StringUtils.isEmpty(currentUserId)) {
                 throw new ServiceException("failed to find current user id");
@@ -232,8 +236,11 @@ public class AccountController {
         }
     }
 
+    /**
+     * 环境鉴权
+     */
     private void validateEnv() {
-        if (AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE.equals(AuthContext.getAuthz())) {
+        if (AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE.equals(AuthContext.getAuthz())) {//superpowers-service
             if (!EnvConstant.ENV_DEV.equals(this.envConfig.getName())) {
                 logger.warn("Development service trying to connect outside development environment");
                 throw new PermissionDeniedException("This service is not available outside development environments");

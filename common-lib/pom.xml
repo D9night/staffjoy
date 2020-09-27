@@ -45,6 +45,7 @@
             <artifactId>modelmapper</artifactId>
             <version>2.3.3</version>
         </dependency>
+        <!-- JWT生成和校验库-->
         <dependency>
             <groupId>com.auth0</groupId>
             <artifactId>java-jwt</artifactId>

@@ -19,10 +19,12 @@ import javax.validation.constraints.NotBlank;
 // @Validated
 public interface AccountClient {
 
+    //创建新账户
     @PostMapping(path = "/create")
     GenericAccountResponse createAccount(@RequestHeader(AuthConstant.AUTHORIZATION_HEADER) String authz,
                                          @RequestBody @Valid CreateAccountRequest request);
 
+    //同步用户事件到Intercom客服系统
     @PostMapping(path = "/track_event")
     BaseResponse trackEvent(@RequestBody @Valid TrackEventRequest request);
 
@@ -35,15 +37,17 @@ public interface AccountClient {
     ListAccountResponse listAccounts(@RequestHeader(AuthConstant.AUTHORIZATION_HEADER) String authz,
                                      @RequestParam int offset, @RequestParam @Min(0) int limit);
 
+    //获取或创建(如不存在)客户
     // GetOrCreate is for internal use by other APIs to match a user based on their phonenumber or email.
     @PostMapping(path = "/get_or_create")
     GenericAccountResponse getOrCreateAccount(@RequestHeader(AuthConstant.AUTHORIZATION_HEADER) String authz,
                                               @RequestBody @Valid GetOrCreateRequest request);
 
+    //获取账户
     @GetMapping(path = "/get")
     GenericAccountResponse getAccount(@RequestHeader(AuthConstant.AUTHORIZATION_HEADER) String authz,
                                       @RequestParam @NotBlank String userId);
-
+    //更新账户
     @PutMapping(path = "/update")
     GenericAccountResponse updateAccount(@RequestHeader(AuthConstant.AUTHORIZATION_HEADER) String authz,
                                          @RequestBody @Valid AccountDto newAccount);
