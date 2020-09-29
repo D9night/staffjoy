@@ -1,5 +1,8 @@
 package xyz.staffjoy.sms;
 
+/**
+ * 阿里云短信服务相关常量项
+ */
 public class SmsConstant {
     public static final String SERVICE_NAME = "sms-service";
 

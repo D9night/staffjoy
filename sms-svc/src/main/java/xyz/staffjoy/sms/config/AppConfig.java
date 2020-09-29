@@ -20,6 +20,9 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.concurrent.Executor;
 
+/**
+ * 初始化配置
+ */
 @Configuration
 @EnableAsync
 @Import(value = StaffjoyRestConfig.class)
@@ -29,9 +32,11 @@ public class AppConfig {
 
     private static ILogger logger = SLoggerFactory.getLogger(AppConfig.class);
 
+    //阿里云短信通知服务相关密匙
     @Autowired
     AppProps appProps;
 
+    //阿里云的相关client
     @Bean
     public IAcsClient acsClient(@Autowired SentryClient sentryClient) {
         IClientProfile profile = DefaultProfile.getProfile(SmsConstant.ALIYUN_REGION_ID, appProps.getAliyunAccessKey(), appProps.getAliyunAccessSecret());
@@ -45,6 +50,7 @@ public class AppConfig {
         return client;
     }
 
+    //初始化异步动作所需的线程池
     @Bean(name=ASYNC_EXECUTOR_NAME)
     public Executor asyncExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();

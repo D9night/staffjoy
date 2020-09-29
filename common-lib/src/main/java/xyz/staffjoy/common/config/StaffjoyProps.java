@@ -10,6 +10,7 @@ import javax.validation.constraints.NotBlank;
 
 /**
  * 公共属性
+ * 见配置文件application.yml中设置
  */
 @ConfigurationProperties(prefix="staffjoy.common")
 @Data

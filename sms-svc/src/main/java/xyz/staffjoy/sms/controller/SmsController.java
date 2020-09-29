@@ -16,6 +16,9 @@ import xyz.staffjoy.sms.service.SmsSendService;
 
 import javax.validation.Valid;
 
+/**
+ * 短信通知服务
+ */
 @RestController
 @RequestMapping("/v1")
 @Validated
@@ -23,12 +26,14 @@ public class SmsController {
 
     static final ILogger logger = SLoggerFactory.getLogger(SmsController.class);
 
+    //阿里云短信通知服务相关密匙
     @Autowired
     private AppProps appProps;
 
     @Autowired
     private SmsSendService smsSendService;
 
+    //发送短信
     @PostMapping(path = "/queue_send")
     @Authorize({
             AuthConstant.AUTHORIZATION_COMPANY_SERVICE,

@@ -29,8 +29,10 @@ public class SmsSendService {
     @Autowired
     SentryClient sentryClient;
 
+    //发送短信 异步
     @Async(AppConfig.ASYNC_EXECUTOR_NAME)
     public void sendSmsAsync(SmsRequest smsRequest) {
+        //构建短信请求 阿里云 第三方
         SendSmsRequest request = new SendSmsRequest();
         request.setPhoneNumbers(smsRequest.getTo());
         request.setSignName(appProps.getAliyunSmsSignName());
@@ -38,6 +40,7 @@ public class SmsSendService {
         request.setTemplateParam(smsRequest.getTemplateParam());
 
         try {
+            //发送短信
             SendSmsResponse response = acsClient.getAcsResponse(request);
             if ("OK".equals(response.getCode())) {
                 logger.info("SMS sent - " + response.getRequestId(),
@@ -45,6 +48,7 @@ public class SmsSendService {
                         "template_code", smsRequest.getTemplateCode(),
                         "template_param", smsRequest.getTemplateParam());
             } else {
+                //发送异常日志到sentry云服务
                 Context sentryContext = sentryClient.getContext();
                 sentryContext.addTag("to", smsRequest.getTo());
                 sentryContext.addTag("template_code", smsRequest.getTemplateCode());
@@ -52,6 +56,7 @@ public class SmsSendService {
                 logger.error("failed to send: bad aliyun sms response " + response.getCode());
             }
         } catch (ClientException ex) {
+            //发送异常日志到sentry云服务
             Context sentryContext = sentryClient.getContext();
             sentryContext.addTag("to", smsRequest.getTo());
             sentryContext.addTag("template_code", smsRequest.getTemplateCode());

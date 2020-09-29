@@ -19,10 +19,10 @@ public class GreetingService {
 
         DispatchPreference dispatchPreference = helperService.getPreferredDispatch(account);
         switch (dispatchPreference) {
-            case DISPATCH_SMS:
+            case DISPATCH_SMS://短信
                 helperService.smsGreetingAsync(account.getPhoneNumber());
                 break;
-            case DISPATCH_EMAIL:
+            case DISPATCH_EMAIL://邮件
                 helperService.mailGreetingAsync(account);
                 break;
             default:

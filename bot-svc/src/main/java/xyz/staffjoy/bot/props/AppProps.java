@@ -9,6 +9,9 @@ import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.NotNull;
 
+/**
+ * 见配置文件application.yml
+ */
 @Component
 @ConfigurationProperties(prefix="staffjoy")
 @Data
@@ -17,6 +20,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 public class AppProps {
 
+    //强制发送邮件
     private boolean forceEmailPreference;
 
 }

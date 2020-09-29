@@ -1,6 +1,7 @@
 logging:
   config: /etc/staffjoy/logback-spring.xml
 
+#AppProps类中阿里云的相关配置
 staffjoy:
   white-list-only: false
   concurrency: 3

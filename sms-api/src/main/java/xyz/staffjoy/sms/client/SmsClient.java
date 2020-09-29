@@ -11,6 +11,7 @@ import xyz.staffjoy.sms.dto.SmsRequest;
 
 import javax.validation.Valid;
 
+//短信通知服务
 @FeignClient(name = SmsConstant.SERVICE_NAME, path = "/v1", url = "${staffjoy.sms-service-endpoint}")
 public interface SmsClient {
     @PostMapping(path = "/queue_send")
