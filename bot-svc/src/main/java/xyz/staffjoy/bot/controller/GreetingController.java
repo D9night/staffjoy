@@ -18,6 +18,7 @@ public class GreetingController {
     @Autowired
     private GreetingService greetingService;
 
+    //给用户发送问候短信
     @PostMapping(value = "/sms_greeting")
     BaseResponse sendSmsGreeting(@RequestBody @Validated GreetingRequest request) {
         greetingService.greeting(request.getUserId());

@@ -9,8 +9,12 @@ import xyz.staffjoy.mail.dto.EmailRequest;
 
 import javax.validation.Valid;
 
+/**
+ * 邮件服务client
+ */
 @FeignClient(name = MailConstant.SERVICE_NAME, path = "/v1", url = "${staffjoy.email-service-endpoint}")
 public interface MailClient {
+    //发送邮件
     @PostMapping(path = "/send")
     BaseResponse send(@RequestBody @Valid EmailRequest request);
 }

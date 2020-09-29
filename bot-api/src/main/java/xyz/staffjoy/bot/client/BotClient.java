@@ -8,6 +8,7 @@ import xyz.staffjoy.bot.BotConstant;
 import xyz.staffjoy.bot.dto.*;
 import xyz.staffjoy.common.api.BaseResponse;
 
+//通知client
 @FeignClient(name = BotConstant.SERVICE_NAME, path = "/v1", url = "${staffjoy.bot-service-endpoint}")
 public interface BotClient {
 

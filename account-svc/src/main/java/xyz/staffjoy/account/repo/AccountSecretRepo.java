@@ -13,6 +13,7 @@ public interface AccountSecretRepo extends JpaRepository<AccountSecret, String> 
 
     AccountSecret findAccountSecretByEmail(String email);
 
+    //更新用户密码
     @Modifying(clearAutomatically = true)
     @Query("update AccountSecret accountSecret set accountSecret.passwordHash = :passwordHash where accountSecret.id = :id")
     @Transactional

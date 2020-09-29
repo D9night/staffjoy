@@ -17,6 +17,12 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class AuthContext {
 
+    /**
+     * 获取请求头中属性为
+     * headerName的属性值
+     * @param headerName 请求头中属性名
+     * @return
+     */
     private static String getRequetHeader(String headerName) {
         RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
         if (requestAttributes instanceof ServletRequestAttributes) {
@@ -32,6 +38,7 @@ public class AuthContext {
     }
 
     public static String getAuthz() {
+        //获取请求头中属性名为"Authorization"的属性值
         return getRequetHeader(AuthConstant.AUTHORIZATION_HEADER);//Authorization
     }
 

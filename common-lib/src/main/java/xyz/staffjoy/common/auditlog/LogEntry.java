@@ -4,6 +4,9 @@ import com.github.structlog4j.IToLog;
 import lombok.Builder;
 import lombok.Data;
 
+/**
+ * 审计日志
+ */
 @Data
 @Builder
 public class LogEntry implements IToLog {

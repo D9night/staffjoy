@@ -44,6 +44,13 @@ public class Sign {
         return algorithm;
     }
 
+    /**
+     * 生成邮件确认token
+     * @param userId
+     * @param email
+     * @param signingToken
+     * @return
+     */
     public static String generateEmailConfirmationToken(String userId, String email, String signingToken) {
         Algorithm algorithm = getAlgorithm(signingToken);
         String token = JWT.create()

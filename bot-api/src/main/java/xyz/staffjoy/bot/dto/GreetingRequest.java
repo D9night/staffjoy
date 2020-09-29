@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 
+/**
+ * 问候短信请求
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

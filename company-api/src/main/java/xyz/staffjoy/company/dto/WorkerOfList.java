@@ -5,6 +5,9 @@ import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 员工以及员工所属的团队信息
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
