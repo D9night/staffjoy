@@ -8,12 +8,16 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import javax.validation.constraints.NotBlank;
 
+/**
+ * 公共属性
+ */
 @ConfigurationProperties(prefix="staffjoy.common")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class StaffjoyProps {
+    //异常日志云服务提供的dsn
     @NotBlank
     private String sentryDsn;
     @NotBlank

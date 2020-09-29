@@ -15,7 +15,8 @@
     <version>1.0.0</version>
     <name>Staffjoy-Account-Svc</name>
     <url>https://www.staffjoy.xyz</url>
- 
+
+    <!-- 具体依赖的各种jar包 -->
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -39,36 +40,48 @@
             <artifactId>h2</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <!-- 在线客服系统 -->
         <dependency>
             <groupId>io.intercom</groupId>
             <artifactId>intercom-java</artifactId>
             <version>2.8.0</version>
         </dependency>
+
         <dependency>
             <groupId>xyz.staffjoy</groupId>
             <artifactId>common-lib</artifactId>
         </dependency>
+
+        <!-- accout-api 接口-->
         <dependency>
             <groupId>xyz.staffjoy</groupId>
             <artifactId>account-api</artifactId>
             <version>1.0.0</version>
         </dependency>
+
+        <!-- 依赖 company-api 接口-->
         <dependency>
             <groupId>xyz.staffjoy</groupId>
             <artifactId>company-api</artifactId>
             <version>1.0.0</version>
         </dependency>
+
+        <!-- 邮件 接口-->
         <dependency>
             <groupId>xyz.staffjoy</groupId>
             <artifactId>mail-api</artifactId>
             <version>1.0.1</version>
         </dependency>
+        
         <dependency>
             <groupId>xyz.staffjoy</groupId>
             <artifactId>bot-api</artifactId>
             <version>1.0.0</version>
         </dependency>
     </dependencies>
+
+    <!-- maven中pom文件中的 build标签 到底有什么作用-->
     <build>
         <plugins>
             <plugin>
@@ -78,6 +91,7 @@
         </plugins>
     </build>
 
+    <!-- maven中 pom 文件中的 profiles标签 到底有什么作用 -->
     <profiles>
         <profile>
             <id>docker</id>

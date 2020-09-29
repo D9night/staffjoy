@@ -18,6 +18,7 @@ public class AppConfig {
 
     public static final String ASYNC_EXECUTOR_NAME = "asyncExecutor";
 
+    //初始化异步动作所需的线程池
     @Bean(name=ASYNC_EXECUTOR_NAME)
     public Executor asyncExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();

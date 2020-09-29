@@ -28,10 +28,14 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
+
+        <!-- 在线异常日志 云服务-->
         <dependency>
             <groupId>io.sentry</groupId>
             <artifactId>sentry</artifactId>
         </dependency>
+
+        <!-- 结构化日志 -->
         <dependency>
             <groupId>structlog4j</groupId>
             <artifactId>structlog4j-api</artifactId>
@@ -40,11 +44,14 @@
             <groupId>structlog4j</groupId>
             <artifactId>structlog4j-json</artifactId>
         </dependency>
+
+        <!-- DTO DMO 转化包-->
         <dependency>
             <groupId>org.modelmapper</groupId>
             <artifactId>modelmapper</artifactId>
             <version>2.3.3</version>
         </dependency>
+
         <!-- JWT生成和校验库-->
         <dependency>
             <groupId>com.auth0</groupId>

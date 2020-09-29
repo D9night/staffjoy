@@ -11,6 +11,9 @@ import xyz.staffjoy.mail.service.MailSendService;
 
 import javax.validation.Valid;
 
+/**
+ * 发送邮件
+ */
 @RestController
 @RequestMapping("/v1")
 @Validated
@@ -21,6 +24,7 @@ public class MailController {
     @Autowired
     private MailSendService mailSendService;
 
+    //发送邮件
     @PostMapping(path = "/send")
     public BaseResponse send(@RequestBody @Valid EmailRequest request) {
         mailSendService.sendMailAsync(request);

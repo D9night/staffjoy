@@ -14,6 +14,9 @@ import xyz.staffjoy.company.dto.*;
 import xyz.staffjoy.company.service.AdminService;
 import xyz.staffjoy.company.service.PermissionService;
 
+/**
+ * 公司管理员Admin服务接口模型
+ */
 @RestController
 @RequestMapping("/v1/company/admin")
 @Validated
@@ -25,6 +28,8 @@ public class AdminController {
     @Autowired
     PermissionService permissionService;
 
+
+    //通过公司id获取管理员用户列表
     @GetMapping(path = "/list")
     @Authorize(value = {
             AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
@@ -34,10 +39,12 @@ public class AdminController {
         if (AuthConstant.AUTHORIZATION_AUTHENTICATED_USER.equals(AuthContext.getAuthz())) {
             permissionService.checkPermissionCompanyAdmin(companyId);
         }
+        //通过公司id获取管理员用户列表
         AdminEntries adminEntries = adminService.listAdmins(companyId);
         return new ListAdminResponse(adminEntries);
     }
 
+    //通过公司id和用户id获取管理员关系
     @GetMapping(path = "/get")
     @Authorize(value = {
             AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
@@ -55,6 +62,7 @@ public class AdminController {
         return new GenericDirectoryResponse(directoryEntryDto);
     }
 
+    //创建用户和公司间的管理员关系
     @PostMapping(path = "/create")
     @Authorize(value = {
             AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
@@ -65,6 +73,7 @@ public class AdminController {
         if (AuthConstant.AUTHORIZATION_AUTHENTICATED_USER.equals(AuthContext.getAuthz())) {
             permissionService.checkPermissionCompanyAdmin(request.getCompanyId());
         }
+        //创建用户和公司间的管理员关系
         DirectoryEntryDto directoryEntryDto = adminService.createAdmin(request.getCompanyId(), request.getUserId());
         return new GenericDirectoryResponse(directoryEntryDto);
     }

@@ -41,7 +41,13 @@ public class CompanyService {
     @PersistenceContext
     private EntityManager entityManager;
 
+    /**
+     * 创建公司
+     * @param companyDto
+     * @return
+     */
     public CompanyDto createCompany(CompanyDto companyDto) {
+        //DTO转化到DMO
         Company company = this.convertToModel(companyDto);
 
         Company savedCompany = null;
@@ -49,9 +55,11 @@ public class CompanyService {
             savedCompany = companyRepo.save(company);
         } catch (Exception ex) {
             String errMsg = "could not create company";
+            //将异常和错误日志发送到在线sentry云服务上
             serviceHelper.handleErrorAndThrowException(logger, ex, errMsg);
         }
 
+        //审计日志
         LogEntry auditLog = LogEntry.builder()
                 .currentUserId(AuthContext.getUserId())
                 .authorization(AuthContext.getAuthz())
@@ -64,11 +72,19 @@ public class CompanyService {
 
         logger.info("created company", auditLog);
 
+        //同步用户事件到Intercom客服系统
         serviceHelper.trackEventAsync("company_created");
 
+        //DMO转化到DTO
         return this.convertToDto(savedCompany);
     }
 
+    /**
+     * 获取现有公司列表 内部使用
+     * @param offset
+     * @param limit
+     * @return
+     */
     public CompanyList listCompanies(int offset, int limit) {
 
         if (limit <= 0) {
@@ -78,9 +94,11 @@ public class CompanyService {
         Pageable pageRequest = PageRequest.of(offset, limit);
         Page<Company> companyPage = null;
         try {
+            //分页查询
             companyPage = companyRepo.findAll(pageRequest);
         } catch (Exception ex) {
             String errMsg = "fail to query database for company list";
+            //将异常和错误日志发送到在线sentry云服务上
             serviceHelper.handleErrorAndThrowException(logger, ex, errMsg);
         }
         List<CompanyDto> companyDtoList = companyPage.getContent().stream().map(company -> convertToDto(company)).collect(toList());
@@ -92,6 +110,11 @@ public class CompanyService {
                 .build();
 }
 
+    /**
+     * 通过id获取公司
+     * @param companyId
+     * @return
+     */
     public CompanyDto getCompany(String companyId) {
 
         Company company = companyRepo.findCompanyById(companyId);
@@ -99,10 +122,16 @@ public class CompanyService {
             throw new ServiceException(ResultCode.NOT_FOUND, "Company not found");
         }
 
+        //DMO转化到DTO
         return this.convertToDto(company);
 
     }
 
+    /**
+     * 更新公司信息
+     * @param companyDto
+     * @return
+     */
     public CompanyDto updateCompany(CompanyDto companyDto) {
         Company existingCompany = companyRepo.findCompanyById(companyDto.getId());
         if (existingCompany == null) {
@@ -116,9 +145,11 @@ public class CompanyService {
             updatedCompany = companyRepo.save(companyToUpdate);
         } catch (Exception ex) {
             String errMsg = "could not update the companyDto";
+            //将异常和错误日志发送到在线sentry云服务上
             serviceHelper.handleErrorAndThrowException(logger, ex, errMsg);
         }
 
+        //审计日志
         LogEntry auditLog = LogEntry.builder()
                 .currentUserId(AuthContext.getUserId())
                 .authorization(AuthContext.getAuthz())
@@ -130,17 +161,30 @@ public class CompanyService {
                 .updatedContents(updatedCompany.toString())
                 .build();
 
+        //结构化日志
         logger.info("updated company", auditLog);
 
+        //同步用户事件到Intercom客服系统
         serviceHelper.trackEventAsync("company_updated");
 
+        //DMO转化到DTO
         return this.convertToDto(updatedCompany);
     }
 
+    /**
+     * DMO转化到DTO
+     * @param company
+     * @return
+     */
     private CompanyDto convertToDto(Company company) {
         return modelMapper.map(company, CompanyDto.class);
     }
 
+    /**
+     * DTO转化到DMO
+     * @param companyDto
+     * @return
+     */
     private Company convertToModel(CompanyDto companyDto) {
         return modelMapper.map(companyDto, Company.class);
     }

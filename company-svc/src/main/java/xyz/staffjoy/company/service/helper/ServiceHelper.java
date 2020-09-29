@@ -40,6 +40,10 @@ public class ServiceHelper {
     @Autowired
     private EnvConfig envConfig;
 
+    /**
+     * 同步用户事件到Intercom客服系统
+     * @param event
+     */
     @Async(AppConfig.ASYNC_EXECUTOR_NAME)
     public void trackEventAsync(String event) {
 
@@ -55,12 +59,15 @@ public class ServiceHelper {
 
         BaseResponse resp = null;
         try {
+            //同步用户事件到Intercom客服系统
             resp = accountClient.trackEvent(trackEventRequest);
         } catch (Exception ex) {
             String errMsg = "fail to trackEvent through accountClient";
+            //将异常和错误日志发送到在线sentry云服务上
             handleErrorAndThrowException(logger, ex, errMsg);
         }
         if (!resp.isSuccess()) {
+            //将异常和错误日志发送到在线sentry云服务上
             handleErrorAndThrowException(logger, resp.getMessage());
         }
     }
@@ -272,6 +279,12 @@ public class ServiceHelper {
         throw new ServiceException(errMsg);
     }
 
+    /**
+     * 将异常和错误日志发送到在线sentry云服务上
+     * @param log
+     * @param ex
+     * @param errMsg
+     */
     public void handleErrorAndThrowException(ILogger log, Exception ex, String errMsg) {
         log.error(errMsg, ex);
         if (!envConfig.isDebug()) {

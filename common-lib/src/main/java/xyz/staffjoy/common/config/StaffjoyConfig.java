@@ -20,10 +20,14 @@ import xyz.staffjoy.common.env.EnvConfig;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
+/**
+ * StaffjoyConfig 公共配置
+ */
 @Configuration
 @EnableConfigurationProperties(StaffjoyProps.class)
 public class StaffjoyConfig implements WebMvcConfigurer {
 
+    //激活的配置文件
     @Value("${spring.profiles.active:NA}")
     private String activeProfile;
 
@@ -38,11 +42,13 @@ public class StaffjoyConfig implements WebMvcConfigurer {
         return new ModelMapper();
     }
 
+    //环境配置
     @Bean
     public EnvConfig envConfig() {
         return EnvConfig.getEnvConfg(activeProfile);
     }
 
+    //异常日志 Sentry Client 依赖第三方库
     @Bean
     public SentryClient sentryClient() {
 
@@ -56,17 +62,21 @@ public class StaffjoyConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+        //注册服务间调用授权截获器
         registry.addInterceptor(new AuthorizeInterceptor());
     }
 
+    //初始化请求截获器
     @Bean
     public RequestInterceptor feignRequestInterceptor() {
+        //Feign客户端传递用户认证信息
         return new FeignRequestHeaderInterceptor();
     }
 
     @PostConstruct
     public void init() {
         // init structured logging
+        //结构化日志 依赖第三方库
         StructLog4J.setFormatter(JsonFormatter.getInstance());
 
         // global log fields setting

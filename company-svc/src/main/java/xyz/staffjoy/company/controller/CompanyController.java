@@ -15,6 +15,9 @@ import xyz.staffjoy.company.dto.GenericCompanyResponse;
 import xyz.staffjoy.company.service.CompanyService;
 import xyz.staffjoy.company.service.PermissionService;
 
+/**
+ * 公司Company服务接口模型
+ */
 @RestController
 @RequestMapping("/v1/company")
 @Validated
@@ -26,6 +29,7 @@ public class CompanyController {
     @Autowired
     PermissionService permissionService;
 
+    //创建公司  需要授权header
     @PostMapping(path = "/create")
     @Authorize(value = {
             AuthConstant.AUTHORIZATION_SUPPORT_USER,
@@ -36,13 +40,16 @@ public class CompanyController {
         return new GenericCompanyResponse(newCompanyDto);
     }
 
+    //获取现有公司列表 内部使用
     @GetMapping(path = "/list")
     @Authorize(value = {AuthConstant.AUTHORIZATION_SUPPORT_USER})
     public ListCompanyResponse listCompanies(@RequestParam int offset, @RequestParam int limit) {
+        ////获取现有公司列表 内部使用
         CompanyList companyList = companyService.listCompanies(offset, limit);
         return new ListCompanyResponse(companyList);
     }
 
+    //通过id获取公司
     @GetMapping(path= "/get")
     @Authorize(value = {
             AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
@@ -57,10 +64,12 @@ public class CompanyController {
         if (AuthConstant.AUTHORIZATION_AUTHENTICATED_USER.equals(AuthContext.getAuthz())) {
             permissionService.checkPermissionCompanyDirectory(companyId);
         }
+        //通过id获取公司
         CompanyDto companyDto = companyService.getCompany(companyId);
         return new GenericCompanyResponse(companyDto);
     }
 
+    //更新公司信息
     @PutMapping(path= "/update")
     @Authorize(value = {
             AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
@@ -70,6 +79,7 @@ public class CompanyController {
         if (AuthConstant.AUTHORIZATION_AUTHENTICATED_USER.equals(AuthContext.getAuthz())) {
             permissionService.checkPermissionCompanyAdmin(companyDto.getId());
         }
+        //更新公司信息
         CompanyDto updatedCompanyDto = companyService.updateCompany(companyDto);
         return new GenericCompanyResponse(updatedCompanyDto);
     }

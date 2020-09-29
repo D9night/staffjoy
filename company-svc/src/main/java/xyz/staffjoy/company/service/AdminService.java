@@ -34,6 +34,11 @@ public class AdminService {
     @Autowired
     ServiceHelper serviceHelper;
 
+    /**
+     * 通过公司id获取管理员用户列表
+     * @param companyId
+     * @return
+     */
     public AdminEntries listAdmins(String companyId) {
         // validate and will throw exception if not found
         companyService.getCompany(companyId);
@@ -51,6 +56,12 @@ public class AdminService {
         return adminEntries;
     }
 
+    /**
+     * 通过公司id和用户id获取管理员关系
+     * @param companyId
+     * @param userId
+     * @return
+     */
     public DirectoryEntryDto getAdmin(String companyId, String userId) {
         // validate and will throw exceptions if not found
         companyService.getCompany(companyId);
@@ -89,6 +100,12 @@ public class AdminService {
         serviceHelper.trackEventAsync("admin_deleted");
     }
 
+    /**
+     *   创建用户和公司间的管理员关系
+     * @param companyId
+     * @param userId
+     * @return
+     */
     public DirectoryEntryDto createAdmin(String companyId, String userId) {
         Admin existing = adminRepo.findByCompanyIdAndUserId(companyId, userId);
         if (existing != null) {
@@ -105,6 +122,7 @@ public class AdminService {
             adminRepo.save(admin);
         } catch (Exception ex) {
             String errMsg = "could not create the admin";
+            //将异常和错误日志发送到在线sentry云服务上
             serviceHelper.handleErrorAndThrowException(logger, ex, errMsg);
         }
 

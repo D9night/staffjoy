@@ -20,14 +20,17 @@ import java.util.concurrent.Executor;
  **/
 @Configuration
 @EnableAsync
+//impot StaffjoyRestConfig 公共配置
 @Import(value = {StaffjoyRestConfig.class})
 @SuppressWarnings(value = "Duplicates")
 public class AppConfig {
 
     public static final String ASYNC_EXECUTOR_NAME = "asyncExecutor";
 
+    //初始化异步动作所需的线程池
     @Bean(name=ASYNC_EXECUTOR_NAME)
     public Executor asyncExecutor() {
+        //spring中的线程池
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         // for passing in request scope context
         executor.setTaskDecorator(new ContextCopyingDecorator());

@@ -16,6 +16,9 @@ import org.springframework.scheduling.annotation.EnableAsync;
 
 import java.util.concurrent.Executor;
 
+/**
+ * 初始化配置
+ */
 @Configuration
 @EnableAsync
 @Import(value = StaffjoyRestConfig.class)
@@ -24,9 +27,11 @@ public class AppConfig {
 
     public static final String ASYNC_EXECUTOR_NAME = "asyncExecutor";
 
+    //阿里云密匙
     @Autowired
     AppProps appProps;
 
+    //初始化阿里云邮件发送client
     @Bean
     public IAcsClient acsClient() {
         IClientProfile profile = DefaultProfile.getProfile(MailConstant.ALIYUN_REGION_ID,
@@ -35,6 +40,7 @@ public class AppConfig {
         return client;
     }
 
+    //初始化异步动作所需的线程池
     @Bean(name=ASYNC_EXECUTOR_NAME)
     public Executor asyncExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();

@@ -32,7 +32,7 @@ public interface AccountClient {
     @PostMapping(path = "/sync_user")
     BaseResponse syncUser(@RequestBody @Valid SyncUserRequest request);
 
-    //获取现有账户列表(内部使用)
+    //获取现有账户列表(内部使用)  需要传 授权header
     @GetMapping(path = "/list")
     ListAccountResponse listAccounts(@RequestHeader(AuthConstant.AUTHORIZATION_HEADER) String authz,
                                      @RequestParam int offset, @RequestParam @Min(0) int limit);

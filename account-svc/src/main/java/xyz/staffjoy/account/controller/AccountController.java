@@ -221,7 +221,7 @@ public class AccountController {
         return baseResponse;
     }
 
-    //跟踪事件
+    //同步用户事件到云客服系统Intercom上
     @PostMapping(path = "/track_event")
     public BaseResponse trackEvent(@RequestBody @Valid TrackEventRequest request) {
         //将 跟踪事件 信息 同步到云服务系统上
@@ -233,7 +233,7 @@ public class AccountController {
         return baseResponse;
     }
 
-    //同步用户信息到云客服系统上
+    //同步用户信息到云客服系统上 Intercom
     @PostMapping(path = "/sync_user")
     public BaseResponse syncUser(@RequestBody @Valid SyncUserRequest request) {
         accountService.syncUser(request.getUserId());

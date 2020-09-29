@@ -26,14 +26,17 @@ public class MailSendService {
     @Autowired
     EnvConfig envConfig;
 
+    //阿里云邮件client
     @Autowired
     IAcsClient acsClient;
 
     @Autowired
     SentryClient sentryClient;
 
+    //发送邮件 异步
     @Async(AppConfig.ASYNC_EXECUTOR_NAME)
     public void sendMailAsync(EmailRequest req) {
+        //结构化日志
         IToLog logContext = () -> {
             return new Object[] {
                     "subject", req.getSubject(),
@@ -48,12 +51,13 @@ public class MailSendService {
             String subject = String.format("[%s] %s", envConfig.getName(), req.getSubject());
             req.setSubject(subject);
 
-            if (!req.getTo().endsWith(MailConstant.STAFFJOY_EMAIL_SUFFIX)) {
-                logger.warn("Intercepted sending due to non-production environment.");
+            if (!req.getTo().endsWith(MailConstant.STAFFJOY_EMAIL_SUFFIX)) {//@jskillcloud.com
+                logger.warn("Intercepted sending due to non-production environment.");//非生产环境 邮件都拦截
                 return;
             }
         }
 
+        //构建阿里云邮件request
         SingleSendMailRequest mailRequest = new SingleSendMailRequest();
         mailRequest.setAccountName(MailConstant.FROM);
         mailRequest.setFromAlias(MailConstant.FROM_NAME);
@@ -64,9 +68,11 @@ public class MailSendService {
         mailRequest.setHtmlBody(req.getHtmlBody());
 
         try {
+            //调用阿里云的client发送邮件
             SingleSendMailResponse mailResponse = acsClient.getAcsResponse(mailRequest);
             logger.info("Successfully sent email - request id : " + mailResponse.getRequestId(), logContext);
         } catch (ClientException ex) {
+            //构建异常日志，并发送到异常日志sentry云服务
             Context sentryContext = sentryClient.getContext();
             sentryContext.addTag("subject", req.getSubject());
             sentryContext.addTag("to", req.getTo());

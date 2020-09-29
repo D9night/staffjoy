@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import xyz.staffjoy.common.env.EnvConfig;
 
 /**
- * 开发测试环境禁用Sentry异常日志
+ * 开发测试环境禁用Sentry异常日志 配置
  */
 @Aspect
 @Slf4j

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.NotNull;
 
+//阿里云的相关密匙
 @Component
 @ConfigurationProperties(prefix="staffjoy")
 @Data
