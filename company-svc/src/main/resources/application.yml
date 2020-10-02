@@ -1,10 +1,12 @@
 # application.yml
 
 spring:
+#使application-dev.yml文件生效
   profiles:
     active: dev
   application:
     name: company-service
+#数据库配置
   datasource:
     url: ${COMPANY_DATASOURCE_URL}
     username: ${COMPANY_DATASOURCE_USERNAME}

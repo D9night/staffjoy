@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import moment from 'moment';
-import $ from 'npm-zepto';
+import $ from 'zepto-webpack';
 import React, { PropTypes } from 'react';
 import StaffjoyButton from 'components/StaffjoyButton';
 import StaffjoyTextField from 'components/StaffjoyTextField';

@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import $ from 'npm-zepto';
+import $ from 'zepto-webpack';
 import moment from 'moment';
 import React, { PropTypes } from 'react';
 import {

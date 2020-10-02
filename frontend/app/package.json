@@ -69,7 +69,6 @@
     "moment": "^2.16.0",
     "moment-timezone": "^0.5.9",
     "normalizr": "^2.2.1",
-    "npm-zepto": "^1.1.7",
     "raven-js": "^3.7.0",
     "react": "^15.2.1",
     "react-color": "2.11.1",
@@ -85,6 +84,7 @@
     "redux-form": "^6.1.1",
     "redux-logger": "^2.6.1",
     "redux-thunk": "^2.1.0",
-    "whatwg-fetch": "^1.0.0"
+    "whatwg-fetch": "^1.0.0",
+    "zepto-webpack": "^1.2.1"
   }
 }

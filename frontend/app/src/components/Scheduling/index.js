@@ -3,7 +3,7 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { DragDropContext as dragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
-import $ from 'npm-zepto';
+import $ from 'zepto-webpack';
 import * as actions from 'actions';
 import LoadingScreen from 'components/LoadingScreen';
 import StaffjoyButton from 'components/StaffjoyButton';

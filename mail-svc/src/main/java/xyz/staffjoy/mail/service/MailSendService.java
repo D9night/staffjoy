@@ -51,10 +51,10 @@ public class MailSendService {
             String subject = String.format("[%s] %s", envConfig.getName(), req.getSubject());
             req.setSubject(subject);
 
-            if (!req.getTo().endsWith(MailConstant.STAFFJOY_EMAIL_SUFFIX)) {//@jskillcloud.com
+            /*if (!req.getTo().endsWith(MailConstant.STAFFJOY_EMAIL_SUFFIX)) {//@jskillcloud.com
                 logger.warn("Intercepted sending due to non-production environment.");//非生产环境 邮件都拦截
                 return;
-            }
+            }*/
         }
 
         //构建阿里云邮件request
